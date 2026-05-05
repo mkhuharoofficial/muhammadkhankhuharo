@@ -42,6 +42,8 @@ interface Project {
   description: string;
   link: string;
   tags: string[];
+  videoUrl?: string;
+  emoji: string;
 }
 
 interface Certificate {
@@ -61,18 +63,30 @@ interface AwardType {
 
 const PROJECTS: Project[] = [
   {
+    title: "DreamPath AI",
+    year: "2026",
+    description: "DreamPath AI helps students find the right career path with clear guidance and simple steps. It turns confusion into direction so you can move forward with confidence.",
+    link: "https://dreampath-ai-gjns.vercel.app/",
+    tags: ["React", "AI", "Career Guidance"],
+    videoUrl: "https://www.youtube.com/embed/THwHLofqXvo?autoplay=1&mute=1&loop=1&playlist=THwHLofqXvo&controls=0&modestbranding=1&rel=0&iv_load_policy=3",
+    emoji: "🚀"
+  },
+  {
+    title: "AI Health Advisor",
+    year: "2025",
+    description: "A comprehensive healthcare companion featuring an AI Report Explainer, Medicine Reminders, and Emergency SOS integration. Built to bridge the gap between patients and medical clarity.",
+    link: "https://health-guide-app.vercel.app/",
+    tags: ["Healthcare", "AI", "React Native / PWA"],
+    videoUrl: "https://www.youtube.com/embed/flZVbe7xe4w?autoplay=1&mute=1&loop=1&playlist=flZVbe7xe4w&controls=0&modestbranding=1&rel=0&iv_load_policy=3",
+    emoji: "💙"
+  },
+  {
     title: "Personal Portfolio Website",
     year: "2026",
     description: "Designed and published a high-performance personal portfolio website using React and Tailwind CSS. Hosted on GitHub Pages to showcase technical skills and support scholarship applications.",
     link: "https://mkhuharoofficial.github.io/muhammad-khan-portfolio/",
-    tags: ["React", "Tailwind CSS", "Vite", "GitHub Pages"]
-  },
-  {
-    title: "AI Analysis Dashboard (Prototype)",
-    year: "2025",
-    description: "Built a prototype dashboard for visualizing local climate trends using AI-driven data processing. Experimented with prompt-chained analysis for report generation.",
-    link: "https://github.com/mkhuharoofficial",
-    tags: ["AI", "Data Viz", "Prompt Engineering"]
+    tags: ["React", "Tailwind CSS", "Vite", "GitHub Pages"],
+    emoji: "🌐"
   }
 ];
 
@@ -402,46 +416,92 @@ const ProjectsPage = () => (
     <div className="max-w-4xl mb-16">
       <h1 className="text-4xl md:text-6xl font-black font-display text-text-main mb-6">Latest Projects</h1>
       <p className="text-text-dim text-lg font-light leading-relaxed">
-        Learning the theory is good, but applying your knowledge on a project is AWESOME!! 
-        Here are some of my ventures.
+        Learning the theory is good, but applying your knowledge on a project is <span className="text-accent font-bold">AWESOME!!</span> 
+        Here are my latest technical ventures.
       </p>
     </div>
 
-    <div className="grid md:grid-cols-2 gap-10">
+    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
       {PROJECTS.map((project, i) => (
         <motion.div 
           key={project.title}
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1 }}
-          className="bg-white border border-border p-8 rounded-3xl hover:border-accent transition-all shadow-sm hover:shadow-xl hover:shadow-accent/5"
+          className="group relative flex flex-col"
         >
-          <div className="flex items-center justify-between mb-8">
-            <span className="text-accent text-[10px] font-black tracking-[0.2em] uppercase">{project.year}</span>
-            <div className="w-10 h-10 rounded-full bg-accent-soft flex items-center justify-center text-accent">
-               <Globe size={18} />
+          {/* Project Media Wrapper */}
+          <div className="relative aspect-video rounded-3xl overflow-hidden bg-bg-subtle mb-6 border border-border group-hover:border-accent transition-all shadow-sm">
+            {project.videoUrl ? (
+              project.videoUrl.includes('youtube.com') || project.videoUrl.includes('youtu.be') ? (
+                <div className="w-full h-full pointer-events-none relative">
+                  <iframe
+                    src={project.videoUrl}
+                    className="absolute inset-0 w-full h-[150%] -top-[25%] object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  ></iframe>
+                </div>
+              ) : (
+                <video 
+                  src={project.videoUrl} 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline 
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity pointer-events-none"
+                />
+              )
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/5 to-accent/10">
+                <span className="text-6xl group-hover:scale-125 transition-transform duration-500">{project.emoji}</span>
+              </div>
+            )}
+            
+            {/* Year Badge */}
+            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black tracking-widest text-accent z-10 border border-border">
+              {project.year}
             </div>
           </div>
-          <h3 className="text-2xl font-bold font-display text-text-main mb-4">{project.title}</h3>
-          <p className="text-text-dim text-sm mb-8 leading-relaxed italic">"{project.description}"</p>
-          <div className="flex flex-wrap gap-2 mb-10">
-            {project.tags.map(t => <span key={t} className="text-[10px] font-bold bg-bg-subtle text-text-dim px-3 py-1 rounded-md">{t}</span>)}
+
+          {/* Project Info */}
+          <div className="flex-grow">
+            <h3 className="text-2xl font-bold font-display text-text-main mb-3 flex items-center gap-3">
+              {project.title}
+            </h3>
+            <p className="text-text-dim text-sm mb-6 leading-relaxed">
+              {project.description}
+            </p>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {project.tags.map(t => (
+                <span key={t} className="text-[10px] font-bold bg-accent/5 text-accent px-3 py-1 rounded-full border border-accent/10">
+                  {t}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="flex gap-4">
-            <a href={project.link} target="_blank" className="bg-accent text-white px-6 py-2.5 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-blue-600 transition-colors">
-              Show Project <ExternalLink size={14} />
-            </a>
-            <a href="https://github.com/mkhuharoofficial" target="_blank" className="border border-border text-text-main px-6 py-2.5 rounded-lg text-xs font-bold hover:border-accent transition-colors">
-               Source Code
+
+          {/* Attractive Live Button */}
+          <div>
+            <a 
+              href={project.link} 
+              target="_blank" 
+              className="inline-flex items-center gap-3 bg-text-main text-white px-8 py-3.5 rounded-2xl font-bold text-sm hover:bg-accent transition-all hover:shadow-xl hover:shadow-accent/30 group/btn"
+            >
+              <Globe size={18} className="group-hover/btn:rotate-12 transition-transform" />
+              LIVE
+              <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
             </a>
           </div>
         </motion.div>
       ))}
       
-      <div className="border-4 border-dashed border-border rounded-3xl p-10 flex flex-col items-center justify-center text-center opacity-70">
-        <Code2 size={40} className="text-text-dim mb-6" />
-        <h3 className="text-xl font-bold text-text-main mb-3">Incoming Project</h3>
-        <p className="text-sm text-text-dim max-w-xs">Building an AI news aggregator with Python and React. Loading...</p>
+      {/* Incoming Placeholder */}
+      <div className="border-4 border-dashed border-border rounded-3xl p-12 flex flex-col items-center justify-center text-center opacity-60 hover:opacity-100 transition-all cursor-default">
+        <div className="w-16 h-16 rounded-full bg-border flex items-center justify-center mb-6">
+          <Code2 size={32} className="text-text-dim" />
+        </div>
+        <h3 className="text-xl font-bold text-text-main mb-2">Next Project Here</h3>
+        <p className="text-sm text-text-dim max-w-xs">Exploring advanced AI automation and secure cloud architectures.</p>
       </div>
     </div>
   </PageWrapper>
