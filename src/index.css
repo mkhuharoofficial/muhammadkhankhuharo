@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f9fafb;
+  --color-accent: #3b82f6;
+  --color-text-main: #111827;
+  --color-text-dim: #4b5563;
+  --color-border: #e5e7eb;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-text-main font-sans antialiased selection:bg-accent/20 selection:text-accent;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    @apply font-display tracking-tight text-text-main;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply text-text-dim hover:text-accent text-sm font-semibold transition-all relative py-1;
+  }
+  
+  .nav-link.active {
+    @apply text-accent;
+  }
+  
+  .nav-link.active::after {
+    @apply content-[''] absolute -bottom-1 left-0 w-full h-0.5 bg-accent rounded-full;
+  }
+
+  .card-minimal {
+    @apply bg-white border border-border rounded-xl p-6 transition-all hover:shadow-xl hover:shadow-accent/5 hover:border-accent/30;
+  }
+  
+  .badge {
+    @apply text-[10px] font-bold tracking-widest uppercase bg-accent/10 border border-accent/20 px-3 py-1 rounded-full text-accent;
+  }
+}
+
+.page-transition-container {
+  @apply min-h-screen pt-24 pb-16 px-6 md:px-16 max-w-6xl mx-auto;
+}
+
+.hero-dot-pattern {
+  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
