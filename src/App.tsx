@@ -36,6 +36,10 @@ import {
 
 // --- Types ---
 
+const dreampathMockup = "/src/assets/images/dreampath_mockup_1781780193193.jpg";
+const healthGuideMockup = "/src/assets/images/health_guide_mockup_1781780615997.jpg";
+const thumbforgeMockup = "/src/assets/images/thumbforge_mockup_1781780831640.jpg";
+
 interface Project {
   title: string;
   year: string;
@@ -43,6 +47,7 @@ interface Project {
   link: string;
   tags: string[];
   videoUrl?: string;
+  imageUrl?: string;
   emoji: string;
 }
 
@@ -68,17 +73,26 @@ const PROJECTS: Project[] = [
     description: "DreamPath AI helps students find the right career path with clear guidance and simple steps. It turns confusion into direction so you can move forward with confidence.",
     link: "https://dreampath-ai-gjns.vercel.app/",
     tags: ["React", "AI", "Career Guidance"],
-    videoUrl: "https://www.youtube.com/embed/THwHLofqXvo?autoplay=1&mute=1&loop=1&playlist=THwHLofqXvo&controls=0&modestbranding=1&rel=0&iv_load_policy=3",
+    imageUrl: dreampathMockup,
     emoji: "🚀"
   },
   {
-    title: "AI Health Advisor",
+    title: "Health Guide App",
     year: "2025",
     description: "A comprehensive healthcare companion featuring an AI Report Explainer, Medicine Reminders, and Emergency SOS integration. Built to bridge the gap between patients and medical clarity.",
     link: "https://health-guide-app.vercel.app/",
     tags: ["Healthcare", "AI", "React Native / PWA"],
-    videoUrl: "https://www.youtube.com/embed/flZVbe7xe4w?autoplay=1&mute=1&loop=1&playlist=flZVbe7xe4w&controls=0&modestbranding=1&rel=0&iv_load_policy=3",
+    imageUrl: healthGuideMockup,
     emoji: "💙"
+  },
+  {
+    title: "ThumbForge",
+    year: "2026",
+    description: "ThumbForge is a premium, free web app that lets you extract and download high-definition (HD) thumbnails from any YouTube video or Short instantly.",
+    link: "https://thumb-forge-beta.vercel.app/",
+    tags: ["React", "Vite", "YouTube Utility"],
+    imageUrl: thumbforgeMockup,
+    emoji: "🖼️"
   },
   {
     title: "Personal Portfolio Website",
@@ -413,15 +427,15 @@ const HomePage = () => (
 
 const ProjectsPage = () => (
   <PageWrapper>
-    <div className="max-w-4xl mb-16">
-      <h1 className="text-4xl md:text-6xl font-black font-display text-text-main mb-6">Latest Projects</h1>
-      <p className="text-text-dim text-lg font-light leading-relaxed">
+    <div className="max-w-4xl mb-10">
+      <h1 className="text-3xl md:text-5xl font-black font-display text-text-main mb-4">Latest Projects</h1>
+      <p className="text-text-dim text-base font-light leading-relaxed">
         Learning the theory is good, but applying your knowledge on a project is <span className="text-accent font-bold">AWESOME!!</span> 
         Here are my latest technical ventures.
       </p>
     </div>
 
-    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 max-w-5xl mx-auto">
       {PROJECTS.map((project, i) => (
         <motion.div 
           key={project.title}
@@ -431,13 +445,20 @@ const ProjectsPage = () => (
           className="group relative flex flex-col"
         >
           {/* Project Media Wrapper */}
-          <div className="relative aspect-video rounded-3xl overflow-hidden bg-bg-subtle mb-6 border border-border group-hover:border-accent transition-all shadow-sm">
-            {project.videoUrl ? (
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-bg-subtle mb-3.5 border border-border group-hover:border-accent transition-all shadow-sm">
+            {project.imageUrl ? (
+              <img 
+                src={project.imageUrl} 
+                alt={project.title}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 pointer-events-none"
+              />
+            ) : project.videoUrl ? (
               project.videoUrl.includes('youtube.com') || project.videoUrl.includes('youtu.be') ? (
-                <div className="w-full h-full pointer-events-none relative">
+                <div className="w-full h-full pointer-events-none scale-125 group-hover:scale-[1.35] transition-transform duration-700">
                   <iframe
                     src={project.videoUrl}
-                    className="absolute inset-0 w-full h-[150%] -top-[25%] object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   ></iframe>
                 </div>
@@ -448,7 +469,8 @@ const ProjectsPage = () => (
                   muted 
                   loop 
                   playsInline 
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity pointer-events-none"
+                  preload="auto"
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 pointer-events-none"
                 />
               )
             ) : (
@@ -456,24 +478,19 @@ const ProjectsPage = () => (
                 <span className="text-6xl group-hover:scale-125 transition-transform duration-500">{project.emoji}</span>
               </div>
             )}
-            
-            {/* Year Badge */}
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black tracking-widest text-accent z-10 border border-border">
-              {project.year}
-            </div>
           </div>
 
           {/* Project Info */}
           <div className="flex-grow">
-            <h3 className="text-2xl font-bold font-display text-text-main mb-3 flex items-center gap-3">
+            <h3 className="text-lg font-bold font-display text-text-main mb-1.5 flex items-center gap-2">
               {project.title}
             </h3>
-            <p className="text-text-dim text-sm mb-6 leading-relaxed">
+            <p className="text-text-dim text-xs md:text-sm mb-3 leading-relaxed line-clamp-3">
               {project.description}
             </p>
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="flex flex-wrap gap-1.5 mb-4">
               {project.tags.map(t => (
-                <span key={t} className="text-[10px] font-bold bg-accent/5 text-accent px-3 py-1 rounded-full border border-accent/10">
+                <span key={t} className="text-[9px] font-bold bg-accent/5 text-accent px-2.5 py-0.5 rounded-full border border-accent/10">
                   {t}
                 </span>
               ))}
@@ -485,23 +502,23 @@ const ProjectsPage = () => (
             <a 
               href={project.link} 
               target="_blank" 
-              className="inline-flex items-center gap-3 bg-text-main text-white px-8 py-3.5 rounded-2xl font-bold text-sm hover:bg-accent transition-all hover:shadow-xl hover:shadow-accent/30 group/btn"
+              className="inline-flex items-center gap-2 bg-text-main text-white px-5 py-2 rounded-xl font-bold text-xs hover:bg-accent transition-all hover:shadow-xl hover:shadow-accent/30 group/btn"
             >
-              <Globe size={18} className="group-hover/btn:rotate-12 transition-transform" />
+              <Globe size={13} className="group-hover/btn:rotate-12 transition-transform" />
               LIVE
-              <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+              <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
             </a>
           </div>
         </motion.div>
       ))}
       
       {/* Incoming Placeholder */}
-      <div className="border-4 border-dashed border-border rounded-3xl p-12 flex flex-col items-center justify-center text-center opacity-60 hover:opacity-100 transition-all cursor-default">
-        <div className="w-16 h-16 rounded-full bg-border flex items-center justify-center mb-6">
-          <Code2 size={32} className="text-text-dim" />
+      <div className="border-4 border-dashed border-border rounded-2xl p-6 flex flex-col items-center justify-center text-center opacity-60 hover:opacity-100 transition-all cursor-default">
+        <div className="w-10 h-10 rounded-full bg-border flex items-center justify-center mb-3">
+          <Code2 size={20} className="text-text-dim" />
         </div>
-        <h3 className="text-xl font-bold text-text-main mb-2">Next Project Here</h3>
-        <p className="text-sm text-text-dim max-w-xs">Exploring advanced AI automation and secure cloud architectures.</p>
+        <h3 className="text-base font-bold text-text-main mb-1">Next Project Here</h3>
+        <p className="text-xs text-text-dim max-w-xs">Exploring advanced AI automation and secure cloud architectures.</p>
       </div>
     </div>
   </PageWrapper>
